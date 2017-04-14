@@ -72,6 +72,7 @@ describe "#release_bike" do
         expect(subject.release_bike).to be_working
       end
 
+#test added
       it 'fail the release when the bike is broken' do
         bike = Bike.new
         bike.report_broken
