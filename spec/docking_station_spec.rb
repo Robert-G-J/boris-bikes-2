@@ -9,19 +9,19 @@ describe DockingStation do
   end
 
   it 'has an attribute set to an instance of Bike post docking' do
-    bike = Bike.new
+    bike = double(:bike)
     expect(subject.dock(bike)).to eq subject.bikes
   end
 
   it 'returns bike when asked for @bike' do
-    bike = Bike.new
-    subject.dock(bike)
-    expect(subject.bikes).to include bike
+    p bike = double(:bike)
+    p subject.dock(bike)
+    p expect(subject.bikes).to include bike
   end
 
   it 'raises an exception when a user tries to dock a bike at a full docking station' do
-    DockingStation::DEFAULT_CAPACITY.times { subject.dock(Bike.new) }
-    expect { subject.dock(Bike.new)}.to raise_error 'Error: this docking station is occupied.'
+    DockingStation::DEFAULT_CAPACITY.times { subject.dock(double(:bike))  }
+    expect { subject.dock(double(:bike))}.to raise_error 'Error: this docking station is occupied.'
   end
 end
 
@@ -46,7 +46,7 @@ end
 
 
 describe "#dock" do
-    let(:bike) { Bike.new }
+    let(:bike) { double(:bike) }
     let(:station) { DockingStation.new(35) }
     it "allows correct number of bikes to be docked when custom capacity has been set" do
       35.times { station.dock(bike) }
@@ -62,17 +62,17 @@ describe "#release_bike" do
       it { is_expected.to respond_to :release_bike }
 
       it 'gets a bike' do
-        subject.dock(Bike.new)
+        subject.dock(double(:bike))
         expect(subject.release_bike).to be_an_instance_of Bike
       end
 
       it 'expects the bike to be working' do
-        subject.dock(Bike.new)
-        expect(subject.release_bike).to be_working
+        subject.dock(double(:bike))
+          expect(subject.release_bike).to be_working
       end
 
       it 'fail the release when the bike is broken' do
-        bike = Bike.new
+        bike = double(:bike)
         bike.report_broken
         subject.dock bike
         expect { subject.release_bike }.to raise_error "Bike broken"
