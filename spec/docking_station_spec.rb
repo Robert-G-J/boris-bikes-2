@@ -70,8 +70,10 @@ describe "#release_bike" do
       end
 
       it 'expects the bike to be working' do
-        subject.dock(double(:bike))
-          expect(subject.release_bike).to be_working
+        allow(bike).to receive(:working?).and_return(true)
+        allow(bike).to receive(:broken)
+        subject.dock(bike)
+        expect(subject.release_bike).to be_working
       end
 
       it 'fail the release when the bike is broken' do
