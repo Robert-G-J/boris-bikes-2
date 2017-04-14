@@ -55,7 +55,7 @@ describe "#dock" do
   end
 
 describe "#release_bike" do
-      let(:bike) { double(:bike) }
+      let(:bike) { double(:bike, broken: false, working?: true, report_broken: true) }
 
       it 'raises an exception when user tries to release a bike from an empty docking station' do
         expect { subject.release_bike}.to raise_error 'Error: no bikes available at this docking station.'
@@ -64,20 +64,16 @@ describe "#release_bike" do
       it { is_expected.to respond_to :release_bike }
 
       it 'gets a bike' do
-        allow(bike).to receive(:broken).and_return(false)
         subject.dock(bike)
         expect(subject.release_bike).to eq bike
       end
 
       it 'expects the bike to be working' do
-        allow(bike).to receive(:working?).and_return(true)
-        allow(bike).to receive(:broken)
         subject.dock(bike)
         expect(subject.release_bike).to be_working
       end
 
       it 'fail the release when the bike is broken' do
-        allow(bike).to receive(:report_broken)
         allow(bike).to receive(:broken).and_return(true)
         bike.report_broken
         subject.dock bike
