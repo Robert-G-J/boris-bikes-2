@@ -20,7 +20,8 @@ class DockingStation
   end
 
   def dock(bike)
-    full? ? raise('Error: this docking station is occupied.') : bikes << bike
+    fail 'Error: this docking station is occupied.' if full?
+    bikes << bike
   end
 
   private
