@@ -1,27 +1,25 @@
 require './lib/docking_station'
 
 describe DockingStation do
+  let(:bike) { double(:bike, broken: false, working?: true, report_broken: true) }
 
  describe "#dock2" do
-
   it 'docks a bike when passed dock(bike)' do
     expect(subject).to respond_to(:dock).with(1).argument
   end
 
   it 'has an attribute set to an instance of Bike post docking' do
-    bike = double(:bike)
     expect(subject.dock(bike)).to eq subject.bikes
   end
 
   it 'returns bike when asked for @bike' do
-    p bike = double(:bike)
-    p subject.dock(bike)
-    p expect(subject.bikes).to include bike
+    subject.dock(bike)
+    expect(subject.bikes).to include bike
   end
 
   it 'raises an exception when a user tries to dock a bike at a full docking station' do
-    DockingStation::DEFAULT_CAPACITY.times { subject.dock(double(:bike))  }
-    expect { subject.dock(double(:bike))}.to raise_error 'Error: this docking station is occupied.'
+    DockingStation::DEFAULT_CAPACITY.times { subject.dock bike  }
+    expect {subject.dock bike}.to raise_error 'Error: this docking station is occupied.'
   end
 end
 
@@ -46,7 +44,7 @@ end
 
 
 describe "#dock" do
-    let(:bike) { double(:bike) }
+    #let(:bike) { double(:bike) }
     let(:station) { DockingStation.new(35) }
     it "allows correct number of bikes to be docked when custom capacity has been set" do
       35.times { station.dock(bike) }
@@ -55,7 +53,7 @@ describe "#dock" do
   end
 
 describe "#release_bike" do
-      let(:bike) { double(:bike, broken: false, working?: true, report_broken: true) }
+      # let(:bike) { double(:bike, broken: false, working?: true, report_broken: true) }
 
       it 'raises an exception when user tries to release a bike from an empty docking station' do
         expect { subject.release_bike}.to raise_error 'Error: no bikes available at this docking station.'
