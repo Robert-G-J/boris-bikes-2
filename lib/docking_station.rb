@@ -14,7 +14,9 @@ class DockingStation
   end
 
   def release_bike
-    empty? ? raise('Error: no bikes available at this docking station.') : bikes.pop
+    fail 'Error: no bikes available at this docking station.' if empty?
+    fail 'Bike broken' if bikes[-1].broken
+    bikes.pop
   end
 
   def dock(bike)
