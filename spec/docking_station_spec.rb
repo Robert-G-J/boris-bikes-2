@@ -53,6 +53,8 @@ describe "#dock" do
   end
 
 describe "#release_bike" do
+      let(:broken_bike) {double(:broken_bike, broken: true, report_broken: true)}
+
       it 'raises an exception when user tries to release a bike from an empty docking station' do
         expect { subject.release_bike}.to raise_error 'Error: no bikes available at this docking station.'
       end
@@ -70,5 +72,12 @@ describe "#release_bike" do
         subject.dock bike
         expect { subject.release_bike }.to raise_error "Bike broken"
       end
+
+      it 'will release a working bike when one is available in the station' do
+        subject.dock bike
+        subject.dock broken_bike
+        expect(subject.release_bike).to eq bike
+      end
+
   end
 end
