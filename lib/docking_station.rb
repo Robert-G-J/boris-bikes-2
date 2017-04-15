@@ -19,9 +19,11 @@ class DockingStation
     bikes.pop
   end
 
+
+
   def dock(bike)
     fail 'Error: this docking station is occupied.' if full?
-    bikes << bike
+    bike.broken ? bikes.unshift(bike) : bikes << bike
   end
 
   private
